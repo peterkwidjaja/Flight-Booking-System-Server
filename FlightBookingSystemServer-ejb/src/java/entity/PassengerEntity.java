@@ -25,6 +25,13 @@ public class PassengerEntity implements Serializable {
     private String name;
     private char gender;
     private Date dob;
+    
+    public void create(String passportNo, String name, char gender, String dob){
+        this.passportNo = passportNo;
+        this.name = name;
+        this.gender = gender;
+        this.dob = Date.valueOf(dob);
+    }
     public String getPassportNo() {
         return passportNo;
     }

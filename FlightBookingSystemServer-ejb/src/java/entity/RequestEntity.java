@@ -28,6 +28,12 @@ public class RequestEntity implements Serializable {
     private String comment;
     @ManyToOne
     private UserEntity owner = new UserEntity();
+    
+    public void create(String content, String status, String comment){
+        this.content = content;
+        this.status = status;
+        this.comment = comment;
+    }
 
     public int getId() {
         return id;

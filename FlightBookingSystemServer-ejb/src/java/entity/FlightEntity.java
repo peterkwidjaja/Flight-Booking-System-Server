@@ -28,15 +28,16 @@ public class FlightEntity implements Serializable {
     private String aircraftType;
     private int totalSeats;
     @OneToMany(cascade={CascadeType.ALL},mappedBy="flight")
-    private ScheduleEntity schedule = new ScheduleEntity();
+    private ScheduleEntity schedule;
     public FlightEntity() {
     }
-    public void create(String flightNo, String depart, String arriv, String type, int seats){
+    public void create(String flightNo, String depart, String arriv, String type, int seats, ScheduleEntity schedule){
         this.flightNo = flightNo;
         this.departureCity = depart;
         this.arrivalCity = arriv;
         this.aircraftType = type;
         this.totalSeats = seats;
+        this.schedule = schedule;
     }
     public String getFlightNo() {
         return flightNo;

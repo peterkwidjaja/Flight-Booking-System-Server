@@ -44,7 +44,9 @@ public class BookingEntity implements Serializable {
     @JoinTable(name="BOOKINGMMBI_SCHEDULEMMBI")
     private Set<ScheduleEntity> schedules = new HashSet<ScheduleEntity>();
     
-    
+    public BookingEntity(){
+        this.bookingTime = new Date(System.currentTimeMillis());
+    }
     public int getId() {
         return id;
     }

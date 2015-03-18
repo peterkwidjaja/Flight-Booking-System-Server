@@ -31,7 +31,12 @@ public class PaymentEntity implements Serializable {
     
     @OneToOne
     private BookingEntity booking = new BookingEntity();
-    
+    public void create(String cardType, long cardNo, String name){
+        this.cardType = cardType;
+        this.cardNo = cardNo;
+        this.cardHolderName = name;
+        paymentTime = new Date(System.currentTimeMillis()); //auto generation of payment time
+    }
     public int getId() {
         return id;
     }
