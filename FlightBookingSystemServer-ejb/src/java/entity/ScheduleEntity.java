@@ -33,11 +33,11 @@ public class ScheduleEntity implements Serializable {
     @ManyToOne
     private FlightEntity flight = new FlightEntity();
     
-    public void create(Date depart, Date arriv, double price, int availableSeats){
+    public void create(Date depart, Date arriv, double price){
         this.departureTime = depart;
         this.arrivalTime = arriv;
         this.price = price;
-        this.availableSeats = availableSeats;
+        this.availableSeats = 0;
         hasBooking = false;
     }
 

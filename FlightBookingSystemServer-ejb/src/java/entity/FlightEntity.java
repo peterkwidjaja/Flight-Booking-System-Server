@@ -7,6 +7,8 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,16 +30,15 @@ public class FlightEntity implements Serializable {
     private String aircraftType;
     private int totalSeats;
     @OneToMany(cascade={CascadeType.ALL},mappedBy="flight")
-    private ScheduleEntity schedule;
+    private Collection<ScheduleEntity> schedule = new ArrayList<ScheduleEntity>();
     public FlightEntity() {
     }
-    public void create(String flightNo, String depart, String arriv, String type, int seats, ScheduleEntity schedule){
+    public void create(String flightNo, String depart, String arriv, String type, int seats){
         this.flightNo = flightNo;
         this.departureCity = depart;
         this.arrivalCity = arriv;
         this.aircraftType = type;
         this.totalSeats = seats;
-        this.schedule = schedule;
     }
     public String getFlightNo() {
         return flightNo;
@@ -104,11 +105,11 @@ public class FlightEntity implements Serializable {
         this.totalSeats = totalSeats;
     }
 
-    public ScheduleEntity getSchedule() {
+    public Collection<ScheduleEntity> getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(ScheduleEntity schedule) {
+    public void setSchedule(Collection<ScheduleEntity> schedule) {
         this.schedule = schedule;
     }
     
