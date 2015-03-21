@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package ejb;
 
 import entity.FlightEntity;
@@ -23,7 +22,7 @@ import javax.persistence.Query;
 
 /**
  *
- * @author Peter
+ * @author Peter K W
  */
 @Stateless
 public class ServerBean implements ServerBeanRemote {
@@ -139,11 +138,12 @@ public class ServerBean implements ServerBeanRemote {
 
     @Override
     public int checkSchedule(String flightNo, String departureTime) {
-        Query q = em.createQuery("SELECT s FROM Schedules s WHERE s.flightNo='"+flightNo+"'");
+        if(em.find(FlightEntity.class, flightNo)==null)
+            return 0;
+        Query q = em.createQuery("SELECT s FROM Schedules s WHERE s.flight.flightNo='"+flightNo+"'");
         List l = q.getResultList();
         Calendar newCal = Calendar.getInstance();
         newCal.setTimeInMillis(toDate(departureTime));
-        if(l.isEmpty()) return 0;
         for (Object o: l){
             ScheduleEntity temp = (ScheduleEntity) o;
             Calendar c = Calendar.getInstance();
@@ -163,9 +163,6 @@ public class ServerBean implements ServerBeanRemote {
             return -1;
         }
     }
-    
-    
-    
-    
-
+    // Add business logic below. (Right-click in editor and choose
+    // "Insert Code > Add Business Method")
 }

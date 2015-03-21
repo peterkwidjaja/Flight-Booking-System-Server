@@ -19,7 +19,7 @@ import javax.persistence.OneToMany;
  *
  * @author Peter
  */
-@Entity
+@Entity(name="Schedules")
 public class ScheduleEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
