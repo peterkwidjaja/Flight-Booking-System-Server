@@ -29,8 +29,9 @@ public class PaymentEntity implements Serializable {
     private String cardHolderName;
     private Date paymentTime;
     
-    @OneToOne
-    private BookingEntity booking = new BookingEntity();
+    @OneToOne(mappedBy="payment")
+    private BookingEntity booking;
+    
     public void create(String cardType, long cardNo, String name){
         this.cardType = cardType;
         this.cardNo = cardNo;

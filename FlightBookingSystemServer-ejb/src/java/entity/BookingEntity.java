@@ -35,8 +35,8 @@ public class BookingEntity implements Serializable {
     
     @ManyToOne
     private UserEntity owner = new UserEntity();
-    @OneToOne(cascade={CascadeType.ALL})
-    private PaymentEntity payment = new PaymentEntity();
+    @OneToOne(cascade={CascadeType.PERSIST})
+    private PaymentEntity payment;
     @ManyToMany(cascade={CascadeType.PERSIST})
     @JoinTable(name="BOOKINGMMBI_PASSENGERMMBI")
     private Set<PassengerEntity> passengers = new HashSet<PassengerEntity>();
