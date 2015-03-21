@@ -109,7 +109,8 @@ public class ServerBean implements ServerBeanRemote {
         for (ScheduleEntity schedule : schedules) {
             schedule.setAvailableSeats(schedule.getAvailableSeats()+addition);
         }
-        em.merge(temp); //To find out
+        em.merge(temp);
+        em.flush();
         return true;
     }
 
@@ -143,10 +144,13 @@ public class ServerBean implements ServerBeanRemote {
         Query q = em.createQuery("SELECT s FROM Schedules s WHERE s.flight.flightNo='"+flightNo+"'");
         List l = q.getResultList();
         Calendar newCal = getDate(departureTime);
+        String date = departureTime.substring(6);
         for (Object o: l){
             ScheduleEntity temp = (ScheduleEntity) o;
-            Calendar c = getDate(temp.getDepartureTime());
-            if(c.get(Calendar.YEAR)==newCal.get(Calendar.YEAR) && c.get(Calendar.MONTH)==newCal.get(Calendar.MONTH) && c.get(Calendar.DAY_OF_MONTH)==newCal.get(Calendar.DAY_OF_MONTH)){
+            String dateTemp = temp.getDepartureTime().substring(6);
+            //Calendar c = getDate(temp.getDepartureTime());
+            //if(c.get(Calendar.YEAR)==newCal.get(Calendar.YEAR) && c.get(Calendar.MONTH)==newCal.get(Calendar.MONTH) && c.get(Calendar.DAY_OF_MONTH)==newCal.get(Calendar.DAY_OF_MONTH)){
+            if(date.equals(dateTemp)){
                 return 2;
             }
         }
@@ -168,7 +172,44 @@ public class ServerBean implements ServerBeanRemote {
     // "Insert Code > Add Business Method")
 
     @Override
-    public boolean updateSchedule(String flightNo, String departure, String newDeparture, String newArrival, double price) {
-        return false;
+    public void updateScheduleAll(String flightNo, String departure, String newDeparture, String newArrival, double price) {
+        Query q = em.createQuery("SELECT s FROM Schedules s WHERE s.flight.flightNo='"+flightNo+"' AND s.departureTime='"+departure+"'");
+        ScheduleEntity temp = (ScheduleEntity) q.getSingleResult();
+        temp.setDepartureTime(newDeparture);
+        temp.setArrivalTime(newArrival);
+        temp.setPrice(price);
+        em.merge(temp);
+        em.flush();
+    }
+
+    @Override
+    public int checkScheduleBooking(String flightNo, String departure) {
+        /*
+        0-->schedule not found
+        1-->true
+        2-->schedule got booking (only can change price)
+        */
+        Query q = em.createQuery("SELECT s FROM Schedules s WHERE s.flight.flightNo='"+flightNo+"'");
+        List l = q.getResultList();
+        for(Object o: l){
+            ScheduleEntity temp = (ScheduleEntity) o;
+            String date = temp.getDepartureTime().substring(6);
+            if(date.equals(departure)){
+                if(temp.isHasBooking()){
+                    return 2;
+                }
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public void updateScheduleBooking(String flightNo, String departure, double newPrice) {
+        Query q = em.createQuery("SELECT s FROM Schedules s WHERE s.flight.flightNo='"+flightNo+"' AND s.departureTime='"+departure+"'");
+        ScheduleEntity temp = (ScheduleEntity) q.getSingleResult();
+        temp.setPrice(newPrice);
+        em.merge(temp);
+        em.flush();
     }
 }
